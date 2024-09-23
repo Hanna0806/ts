@@ -186,7 +186,7 @@ function checkData(data: typeof dataFromBazaDatas): boolean {
         water: 200,
         el: 350
     }
-    return  dataFromUser.water === data.water && dataFromUser.el === data.water
+    return dataFromUser.water === data.water && dataFromUser.el === data.water
 }
 checkData(dataFromBazaDatas)
 
@@ -195,6 +195,94 @@ checkData(dataFromBazaDatas)
 
 /////////////////////////////////////////
 //// примеры
+// const totalData: TotalWarehouse = {
+//     cookers: "empty",
+//     hats: 2123,
+//     date: new Date(),
+//     deficit: false,
+//     jackets: "empty",
+//     mixers: 2123,
+//     pants: 5552
+//     paper: "empty",
+//     scissors: 21,
+//     socks: 1
+// }
+// type ValidAmount = 'empty' | number;
+
+// interface ClothesWarehouse {
+//     jackets: ValidAmount;
+//     hats: ValidAmount;
+//     socks: ValidAmount;
+//     pants: ValidAmount;
+// }
+
+// interface StationeryWarehouse {
+//     scissors: ValidAmount;
+//     paper: 'empty' | boolean;
+// }
+
+// interface AppliancesWarehouse {
+//     dishwashers: ValidAmount;
+//     cookers: ValidAmount;
+//     mixers: ValidAmount;
+// }
+
+// interface TotalWarehouse
+//     extends ClothesWarehouse,
+//     StationeryWarehouse,
+//     AppliancesWarehouse {
+//     deficit: boolean;
+//     date: Date;
+// }
+
+
+
+////////////////////////////////////////
+
+type TDataObj = {
+    key1: string;
+    key2: string;
+    key3: string;
+}
+const dataObj: TDataObj = {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+};
+
+type TDataObj2 = {
+    [K: string]: string
+}
+const dataObj2: TDataObj2 = {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+    key4: 'value3',
+    key5: 'value3',
+};
+
+interface IDataObj1 {
+    key1: string;
+    key2: string;
+    key3: string;
+}
+const dataObj1: IDataObj1 = {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+};
+
+type TData = [keyof TDataObj2, TDataObj2[keyof TDataObj2]][]
+const data3: TData = [['key1', 2]]
+
+
+const data: [string, string | number | boolean][]= [
+    ['key1', 'value1'],
+    ['key2', 'value2'],
+    ['key3', 'value3'],
+]
+const data2: TData = Object.entries(dataObj1) as TData;
+
 const totalData: TotalWarehouse = {
     cookers: "empty",
     hats: 2123,
@@ -207,36 +295,71 @@ const totalData: TotalWarehouse = {
     scissors: 21,
     socks: 1
 }
-type ValidAmount = 'empty' | number; 
+type ValidAmount = 'empty' | number;
 
 interface ClothesWarehouse {
-  jackets: ValidAmount;
-  hats: ValidAmount;
-  socks: ValidAmount;
-  pants: ValidAmount;
+    jackets: ValidAmount;
+    hats: ValidAmount;
+    socks: ValidAmount;
+    pants: ValidAmount;
 }
 
 interface StationeryWarehouse {
-  scissors: ValidAmount;
-  paper: 'empty' | boolean;
+    scissors: ValidAmount;
+    paper: 'empty' | boolean;
 }
 
 interface AppliancesWarehouse {
-  dishwashers: ValidAmount;
-  cookers: ValidAmount;
-  mixers: ValidAmount;
+    dishwashers: ValidAmount;
+    cookers: ValidAmount;
+    mixers: ValidAmount;
 }
 
 interface TotalWarehouse
-  extends ClothesWarehouse,
+    extends ClothesWarehouse,
     StationeryWarehouse,
     AppliancesWarehouse {
-  deficit: boolean;
-  date: Date;
+    deficit: boolean;
+    date: Date;
+}
+interface ITotalData {
+    cookers: "empty",
+    hats: number,
+    date: new Date(),
+    deficit: boolean,
+    jackets: "empty",
+    mixers: number,
+    pants: number
+    paper: "empty",
+    scissors: number,
+    socks: number
+}
+const totalData: ITotalData = {
+    cookers: "empty",
+    hats: 2123,
+    date: new Date(),
+    deficit: false,
+    jackets: "empty",
+    mixers: 2123,
+    pants: 5552
+    paper: "empty",
+    scissors: 21,
+    socks: 1
 }
 
-function printReport (data: TotalWarehouse) {
-// если есть empty => то выводим сообщение что " нужны следующие элементы одежды:...."
-// если нет empty => выводим сообщение 'все в наличии'
+function printReport(data: TotalWarehouse) {
+// const arr1: string[] = []
+let result: string = (Object.entries(data) as [[keyof TotalWarehouse, 
+    TotalWarehouse[keyof TotalWarehouse]]]).filter(([key, value]) => 
+    value === 'empty').reduce((acc, [key, value]) => `${acc} ${key}` ,'')
+
+if(result.trim().length) {
+    return `нужны следующие элементы : ${result.slice(0, -1)}!`
+}else {
+    return `все в наличие`
 }
-printReport(totalData)
+}
+    // если есть empty => то выводим сообщение что " нужны следующие элементы одежды:...."
+    // если нет empty => выводим сообщение 'все в наличии'
+
+console.log(printReport(totalData));
